@@ -1,0 +1,30 @@
+# Traveloop — Warnings (Resolved)
+
+## ✅ WARNING 1: Aggressive Timeline — RESOLVED
+Status: Acknowledged. 4 developers using Vibe coding (AI-assisted), ~4 modules per developer.
+Estimated build time: 2-3 hours per developer with Vibe coding.
+
+## ✅ WARNING 2: AI Free Tier Limitations — RESOLVED
+Status: Not an issue. Project is for demo/testing purposes only with a small user base.
+Google Gemini free tier (15 RPM, 1M tokens/day) is more than sufficient.
+
+## ✅ WARNING 3: Supabase Free Tier Database Limit — RESOLVED
+Status: Not an issue. Limited users for testing. 500MB is plenty for demo/testing.
+
+## ✅ WARNING 4: Dual Database Complexity — RESOLVED
+Status: Deferred to M17. All modules (M1-M16) will use Supabase-only.
+Local PostgreSQL fallback is extracted into Module M17 to be added later.
+This simplifies initial development significantly.
+
+## ✅ WARNING 5: Vercel Hobby Plan Limitations — RESOLVED
+Status: Not an issue. Testing purposes only. No commercial use requirements.
+Streaming will handle AI function timeout limits.
+
+## ✅ WARNING 6: Large Project Scope — RESOLVED
+Status: 4 developers, ~4 modules each. Vibe coding approach.
+Suggested division:
+- Developer 1: M1 (Foundation), M2 (Auth), M3 (Profile), M4 (Dashboard)
+- Developer 2: M5 (Trips), M6 (Itinerary), M7 (Search), M8 (Budget)
+- Developer 3: M9 (Packing), M10 (Notes), M11 (Collaboration), M12 (Sharing)
+- Developer 4: M13 (AI Services), M14 (Notifications), M15 (Community), M16 (Admin)
+- M17 (Local DB Fallback): Deferred, any developer post-launch

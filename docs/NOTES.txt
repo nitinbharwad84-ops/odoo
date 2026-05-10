@@ -1,0 +1,105 @@
+# Traveloop — Notes
+
+## Team Structure: 4 Developers (Vibe Coding)
+Each developer handles ~4 modules. Estimated 2-3 hours per developer.
+
+### Developer 1: Foundation & User Layer
+- M1 — Project Foundation & PWA Setup
+- M2 — Authentication
+- M3 — User Profile
+- M4 — Dashboard
+
+### Developer 2: Core Planning
+- M5 — Trip Management
+- M6 — Itinerary Builder & Viewing
+- M7 — Destination & Activity Search
+- M8 — Budget Planner
+
+### Developer 3: Supporting Features
+- M9 — Packing Checklist
+- M10 — Notes & Journal
+- M11 — Collaboration
+- M12 — Sharing
+
+### Developer 4: AI & Platform
+- M13 — AI Services
+- M14 — Notifications
+- M15 — Community (Phase 2)
+- M16 — Admin Panel (Phase 2)
+
+### Deferred (Any Developer, Post-Launch)
+- M17 — Local PostgreSQL Fallback
+
+---
+
+## Module Build Order (Dependency Chain)
+
+**IMPORTANT:** Developer 1 must complete M1 first — all other modules depend on it.
+Then M2 (Auth) must complete before Developers 2/3/4 can start.
+
+```
+M1 (Foundation) ←── ALL modules depend on this
+  └── M2 (Auth) ←── ALL authenticated modules depend on this
+        ├── M3 (Profile)
+        ├── M4 (Dashboard) ←── needs M3, M5
+        ├── M5 (Trips) ←── Developers 2/3/4 can start here
+        │     ├── M6 (Itinerary) ←── needs M5
+        │     ├── M7 (Search) ←── needs M5
+        │     ├── M8 (Budget) ←── needs M5
+        │     ├── M9 (Packing) ←── needs M5
+        │     ├── M10 (Notes) ←── needs M5
+        │     ├── M11 (Collaboration) ←── needs M5, M14
+        │     ├── M12 (Sharing) ←── needs M5
+        │     └── M13 (AI Services) ←── needs M5, M6, M8, M9
+        ├── M14 (Notifications)
+        ├── M15 (Community) ←── Phase 2, needs M5, M12
+        └── M16 (Admin) ←── Phase 2, needs M15
+```
+
+**Parallel execution strategy:**
+1. Developer 1 builds M1 → M2 (sequential, ~1 hour)
+2. Once M1+M2 are pushed, ALL developers can start their modules in parallel
+3. Developer 1 continues with M3, M4
+4. Developers 2/3/4 start their modules simultaneously
+
+---
+
+## Database: Supabase-Only (Simplified)
+- All modules use Supabase PostgreSQL directly via Prisma
+- NO local PostgreSQL in M1-M16
+- Local PostgreSQL failover deferred to M17 (post-launch)
+- This significantly simplifies initial development
+
+## Agent Assignment Summary
+| Module | Agent | Developer |
+|--------|-------|-----------|
+| M1 | Antigravity | Dev 1 |
+| M2 | Claude | Dev 1 |
+| M3 | Claude | Dev 1 |
+| M4 | Claude | Dev 1 |
+| M5 | Claude | Dev 2 |
+| M6 | Claude | Dev 2 |
+| M7 | Claude | Dev 2 |
+| M8 | Claude | Dev 2 |
+| M9 | Claude | Dev 3 |
+| M10 | Claude | Dev 3 |
+| M11 | Claude | Dev 3 |
+| M12 | Claude | Dev 3 |
+| M13 | Antigravity | Dev 4 |
+| M14 | Claude | Dev 4 |
+| M15 | Claude | Dev 4 |
+| M16 | Antigravity | Dev 4 |
+| M17 | Antigravity | Any (deferred) |
+
+## Seed Data Required
+- 50 popular destinations (cities worldwide with metadata)
+- 200 activities (across categories, linked to destinations)
+- Create seed script in `prisma/seed.ts`
+
+## Key Architecture Decisions
+1. **Supabase-only database** (local PG failover deferred to M17)
+2. Next.js API Routes (not separate NestJS backend) — reduces complexity
+3. Supabase Auth instead of Clerk — zero additional cost
+4. Google Gemini instead of OpenAI — free tier availability
+5. Leaflet instead of Mapbox — no API key, truly free
+6. PostHog instead of custom analytics — feature flags included
